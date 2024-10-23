@@ -27,7 +27,7 @@ RUN mkdir -p /var/artifacts/gh-pages/01.create-react-app && \
     rsync -av 01.create-react-app/build/ /var/artifacts/gh-pages/01.create-react-app/
 
 # Build esbuild
-WORKDIR /var/build/07.esbuild/
+WORKDIR /var/build/06.esbuild/
 RUN ./install-drops.sh && \
     npm run build
 
