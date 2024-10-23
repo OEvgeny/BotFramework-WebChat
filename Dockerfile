@@ -14,7 +14,7 @@ ADD . .
 
 # Initial rsync excluding specific directories
 RUN mkdir -p /var/artifacts/gh-pages && \
-    rsync -av . /var/artifacts/gh-pages/ --exclude 08.webpack5 --exclude 07.webpack4 --exclude 01.create-react-app
+    rsync -av . /var/artifacts/gh-pages/ --exclude 08.webpack5 --exclude 07.webpack4 --exclude 06.esbuild --exclude 01.create-react-app
 
 # Build create-react-app
 WORKDIR /var/build/01.create-react-app/
@@ -25,6 +25,16 @@ RUN ./install-drops.sh && \
 WORKDIR /var/build/
 RUN mkdir -p /var/artifacts/gh-pages/01.create-react-app && \
     rsync -av 01.create-react-app/build/ /var/artifacts/gh-pages/01.create-react-app/
+
+# Build esbuild
+WORKDIR /var/build/07.esbuild/
+RUN ./install-drops.sh && \
+    npm run build
+
+# Copy esbuild build
+WORKDIR /var/build/
+RUN mkdir -p /var/artifacts/gh-pages/06.esbuild && \
+    rsync -av 06.esbuild/public/ /var/artifacts/gh-pages/06.esbuild/
 
 # Build webpack4
 WORKDIR /var/build/07.webpack4/
