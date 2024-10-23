@@ -1,41 +1,10 @@
 {
   "cleanUrls": false,
+  "renderSingle": true,
   "rewrites": [
     {
       "source": "/",
       "destination": "index.html"
-    },
-    {
-      "source": "/webchat-release-testing/01.create-react-app",
-      "destination": "01.create-react-app/build/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/01.create-react-app/",
-      "destination": "01.create-react-app/build/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/06.esbuild",
-      "destination": "06.esbuild/public/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/06.esbuild/",
-      "destination": "06.esbuild/public/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/07.webpack4",
-      "destination": "07.webpack4/public/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/07.webpack4/",
-      "destination": "07.webpack4/public/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/08.webpack5",
-      "destination": "08.webpack5/public/index.html"
-    },
-    {
-      "source": "/webchat-release-testing/08.webpack5/",
-      "destination": "08.webpack5/public/index.html"
     },
     {
       "source": "/webchat-release-testing/01.create-react-app/:path1/:path2/:filename",
