@@ -8,6 +8,9 @@ import ReactWebChat, {
 
 import { FluentThemeProvider } from 'botframework-webchat-fluent-theme';
 
+import * as WebChat from 'botframework-webchat';
+window.WebChat = WebChat;
+
 function createFetchSpeechServicesCredentials() {
   let expireAfter = 0;
   let resultPromise;

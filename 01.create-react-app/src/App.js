@@ -6,6 +6,9 @@ import ReactWebChat, {
   createStore
 } from 'botframework-webchat';
 
+import * as WebChat from 'botframework-webchat';
+window.WebChat = WebChat;
+
 function createFetchSpeechServicesCredentials() {
   let expireAfter = 0;
   let resultPromise;
