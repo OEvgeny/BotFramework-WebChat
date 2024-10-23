@@ -24,7 +24,7 @@ RUN ./install-drops.sh && \
 # Copy create-react-app build
 WORKDIR /var/build/
 RUN mkdir -p /var/artifacts/gh-pages/01.create-react-app && \
-    rsync -av 01.create-react-app/public/ /var/artifacts/gh-pages/01.create-react-app/
+    rsync -av 01.create-react-app/build/ /var/artifacts/gh-pages/01.create-react-app/
 
 # Build webpack4
 WORKDIR /var/build/07.webpack4/
@@ -50,16 +50,41 @@ RUN mkdir -p /var/artifacts/gh-pages/08.webpack5 && \
 RUN mv /var/artifacts/gh-pages /var/artifacts/WebChat-release-testing
 
 # Second stage: Runtime
-FROM $BASE_IMAGE
+FROM nginx:alpine
+
+# Copy nginx configuration
+COPY <<'EOF' /etc/nginx/conf.d/default.conf
+server {
+    listen 80;
+    server_name localhost;
+    
+    root /var/artifacts;
+    autoindex on;
+
+    # Redirect root to /WebChat-release-testing/
+    location = / {
+        return 301 /WebChat-release-testing/;
+    }
+    
+    # Handle WebChat-release-testing paths
+    location /WebChat-release-testing/ {
+        # Preserve index.html files
+        location ~ /WebChat-release-testing/.*/index\.html$ {
+            try_files $uri =404;
+        }
+        
+        # For all other requests
+        try_files $uri $uri/index.html $uri/ =404;
+    }
+    
+    # Add security headers
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+    add_header X-XSS-Protection "1; mode=block";
+}
+EOF
 
 EXPOSE 80
 
-# Install serve globally in the runtime image
-RUN npm install -g serve
-
-# Copy only the built artifacts from the builder stage
+# Copy artifacts from builder stage
 COPY --from=builder /var/artifacts /var/artifacts
-
-# Set working directory and command
-WORKDIR /var/artifacts/WebChat-release-testing/
-ENTRYPOINT ["npx", "--no-install", "serve", "-p", "80", "../"]
